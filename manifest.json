@@ -3,8 +3,14 @@
   "name": "Prometheus Viewer",
   "description": "Helps investigate endpoints which return Prometheus metrics",
   "version": "1.0.0",
+  "icons": {
+    "16": "prometheus-16.png",
+    "32": "prometheus-32.png",
+    "48": "prometheus-48.png",
+    "128": "prometheus-128.png"
+  },
   "action": {
     "default_popup": "prometheus.html",
-    "default_icon": "prometheus.png"
+    "default_icon": "prometheus-48.png"
   }
 }
