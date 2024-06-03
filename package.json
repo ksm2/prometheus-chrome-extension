@@ -6,12 +6,14 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "format": "prettier --write src/**/*.ts test-server/**/*.js",
     "build": "esbuild src/viewer.ts --bundle --minify --outfile=scripts/viewer.js",
     "watch": "yarn run build --watch",
     "test-server": "node test-server/index.js"
   },
   "devDependencies": {
     "esbuild": "^0.21.4",
+    "prettier": "^3.3.0",
     "prom-client": "^15.1.2"
   }
 }
