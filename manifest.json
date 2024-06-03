@@ -4,13 +4,13 @@
   "description": "Helps investigate endpoints which return Prometheus metrics",
   "version": "1.0.0",
   "icons": {
-    "16": "prometheus-16.png",
-    "32": "prometheus-32.png",
-    "48": "prometheus-48.png",
-    "128": "prometheus-128.png"
+    "16": "icons/prometheus-16.png",
+    "32": "icons/prometheus-32.png",
+    "48": "icons/prometheus-48.png",
+    "128": "icons/prometheus-128.png"
   },
   "action": {
     "default_popup": "prometheus.html",
-    "default_icon": "prometheus-48.png"
+    "default_icon": "icons/prometheus-48.png"
   }
 }
