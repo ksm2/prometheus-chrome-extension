@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Prometheus Viewer",
+  "description": "Helps investigate endpoints which return Prometheus metrics",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "prometheus.html",
+    "default_icon": "prometheus.png"
+  }
+}
