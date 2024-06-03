@@ -4,11 +4,14 @@
   "main": "index.js",
   "author": "Konstantin Simon Maria Möllers <ksm.moellers@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "esbuild src/viewer.ts --bundle --minify --outfile=scripts/viewer.js",
-    "watch": "yarn run build --watch"
+    "watch": "yarn run build --watch",
+    "test-server": "node test-server/index.js"
   },
   "devDependencies": {
-    "esbuild": "^0.21.4"
+    "esbuild": "^0.21.4",
+    "prom-client": "^15.1.2"
   }
 }
