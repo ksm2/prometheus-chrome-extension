@@ -1,0 +1,14 @@
+{
+  "name": "prometheus-chrome-extension",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Konstantin Simon Maria Möllers <ksm.moellers@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "esbuild src/viewer.ts --bundle --minify --outfile=scripts/viewer.js",
+    "watch": "yarn run build --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.4"
+  }
+}
