@@ -1,12 +1,13 @@
-export function parse(input: string): Metrics {
+import { aggregate } from "./aggregate";
+import { InstructionLine, Labels, Line, MetricLine, Metrics } from "./model";
+
+export function parse(input: string): Line[] {
   const lines = splitLines(input)
     .filter((line) => line.length > 0)
     .map(parseLine)
-    .filter(Boolean);
+    .filter((it): it is Line => it !== null);
 
-  console.log(lines);
-
-  return {} satisfies Metrics;
+  return lines;
 }
 
 function splitLines(input: string): string[] {
@@ -42,7 +43,7 @@ function parseLine(line: string): Line | null {
   return null;
 }
 
-function normalizeRawLabels(rawLabels?: string): { [key: string]: string } {
+function normalizeRawLabels(rawLabels?: string): Labels {
   if (!rawLabels) return {};
 
   const trimmed = rawLabels.trim();
@@ -61,21 +62,3 @@ function splitKeyValuePair(kv: string): [string, string] {
   const { key, value } = match.groups!;
   return [key, value];
 }
-
-export type Line = InstructionLine | MetricLine;
-
-export interface InstructionLine {
-  type: "instruction";
-  instr: "TYPE" | "HELP" | string;
-  name: string;
-  value: string;
-}
-
-export interface MetricLine {
-  type: "metric";
-  name: string;
-  labels: { [key: string]: string };
-  value: string;
-}
-
-export interface Metrics {}

@@ -1,3 +1,4 @@
+import { aggregate } from "./aggregate";
 import { findPreWithCode } from "./findPre";
 import { parse } from "./parse";
 
@@ -6,7 +7,8 @@ function onLoad() {
   if (!pre) return;
 
   const text = pre.textContent ?? "";
-  const metrics = parse(text);
+  const lines = parse(text);
+  const metrics = aggregate(lines);
   console.log(metrics);
 }
 
