@@ -1,0 +1,37 @@
+.MetricItem > button {
+    appearance: none;
+    font-weight: bold;
+    font-family: monospace;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.MetricItem > button:hover {
+    text-decoration: underline;
+}
+
+.MetricCount {
+    margin-left: 1rem;
+    color: gray;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.MetricValueItem {
+    font-family: monospace;
+}
+
+.LabelDisplay {
+    color: gray;
+}
+
+.LabelKey {
+    color: green;
+    font-weight: bold;
+}
+
+.LabelValue {
+    font-style: italic;
+    color: orange;
+}

@@ -4,7 +4,7 @@ export function aggregate(lines: (InstructionLine | MetricLine)[]) {
   const metrics: Metrics = {};
   for (const line of lines) {
     if (line.type === "instruction") {
-      metrics[line.name] ??= {};
+      metrics[line.name] ??= { name: line.name, values: [] };
       if (line.instr === "TYPE") {
         metrics[line.name].type = line.value;
       } else if (line.instr === "HELP") {
@@ -13,9 +13,8 @@ export function aggregate(lines: (InstructionLine | MetricLine)[]) {
     } else if (line.type === "metric") {
       const { name, kind } = getMetricName(line);
 
-      metrics[name] ??= {};
-      metrics[name].values ??= [];
-      metrics[name].values!.push({
+      metrics[name] ??= { name, values: [] };
+      metrics[name].values.push({
         labels: line.labels,
         value: line.value,
         kind,

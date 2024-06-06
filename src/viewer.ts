@@ -1,6 +1,7 @@
 import { aggregate } from "./aggregate";
 import { findPreWithCode } from "./findPre";
 import { parse } from "./parse";
+import { render } from "./render";
 
 function onLoad() {
   const pre = findPreWithCode();
@@ -9,7 +10,7 @@ function onLoad() {
   const text = pre.textContent ?? "";
   const lines = parse(text);
   const metrics = aggregate(lines);
-  console.log(metrics);
+  render(pre, metrics);
 }
 
 document.addEventListener("DOMContentLoaded", onLoad, false);

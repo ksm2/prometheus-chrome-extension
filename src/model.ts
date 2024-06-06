@@ -19,9 +19,10 @@ export interface Metrics {
 }
 
 export interface Metric {
+  name: string;
   type?: string;
   help?: string;
-  values?: MetricValue[];
+  values: MetricValue[];
 }
 
 export interface MetricValue {
