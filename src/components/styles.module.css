@@ -20,6 +20,31 @@
     text-decoration: underline;
 }
 
+.MetricType {
+    margin-right: 0.25rem;
+    font-weight: normal;
+    color: white;
+    background: darkgray;
+    border-radius: 0.25rem;
+    padding: 0 0.25rem;
+}
+
+.MetricType.gau {
+    background: #e70000;
+}
+
+.MetricType.ctr {
+    background: #6262ff;
+}
+
+.MetricType.sum {
+    background: darkgreen;
+}
+
+.MetricType.his {
+    background: #db7900;
+}
+
 .MetricCount {
     margin-left: 1rem;
     color: gray;
