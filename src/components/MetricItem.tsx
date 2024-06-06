@@ -22,7 +22,7 @@ export function MetricItem({ metric }: { metric: Metric }) {
       </button>
       <ul style={{ display: expanded ? "block" : "none" }}>
         {metric.values.map((value, index) => (
-          <MetricValueItem key={index} value={value} />
+          <MetricValueItem key={index} value={value} unit={metric.unit} />
         ))}
       </ul>
     </li>

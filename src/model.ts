@@ -22,8 +22,17 @@ export interface Metric {
   name: string;
   type?: string;
   help?: string;
+  unit?: Unit;
   values: MetricValue[];
 }
+
+export type Unit =
+  | "minutes"
+  | "seconds"
+  | "millis"
+  | "micros"
+  | "nanos"
+  | "bytes";
 
 export interface MetricValue {
   labels: Labels;

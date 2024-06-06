@@ -87,3 +87,13 @@
 .ChevronOpen {
     transform: rotate(90deg);
 }
+
+.ValueWithUnit {
+    font-style: italic;
+    color: #d100d1;
+    cursor: alias;
+}
+
+.ValueWithUnit.Original {
+    color: gray;
+}
