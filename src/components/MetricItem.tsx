@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Metric } from "../model";
+import { Chevron } from "./Chevron";
 import { MetricValueItem } from "./MetricValueItem";
 import * as styles from "./styles.module.css";
 
@@ -9,6 +10,7 @@ export function MetricItem({ metric }: { metric: Metric }) {
   return (
     <li className={styles.MetricItem}>
       <button onClick={() => setExpanded((e) => !e)}>
+        <Chevron open={expanded} />
         <span>{metric.name}</span>
         {metric.values.length > 1 && (
           <span className={styles.MetricCount}>

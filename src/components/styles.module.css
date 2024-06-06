@@ -1,3 +1,12 @@
+.MetricList {
+    margin: 1rem;
+    padding: 0;
+}
+
+.MetricItem {
+    list-style-type: none;
+}
+
 .MetricItem > button {
     appearance: none;
     font-weight: bold;
@@ -34,4 +43,22 @@
 .LabelValue {
     font-style: italic;
     color: orange;
+}
+
+.Chevron {
+    width: 0;
+    height: 0;
+
+    display: inline-block;
+
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 8px solid black;
+
+    margin-right: 0.25rem;
+    transition: 0.2s transform;
+}
+
+.ChevronOpen {
+    transform: rotate(90deg);
 }
