@@ -8,7 +8,7 @@ import * as styles from "./styles.module.css";
 
 export function MetricItem({ metric }: { metric: Metric }) {
   const [expanded, setExpanded] = useState(false);
-  const expandable = metric.values.length > 1;
+  const expandable = metric.children.length > 1;
   const cn = classNames(styles.MetricItem, { [styles.Expandable]: expandable });
 
   return (
@@ -16,22 +16,31 @@ export function MetricItem({ metric }: { metric: Metric }) {
       <button onClick={() => setExpanded((e) => !e)}>
         {expandable && <Chevron open={expanded} />}
         <MetricType type={metric.type} />
-        <span style={{ marginRight: "1rem" }}>{metric.name}</span>
+        <span style={{ marginRight: "0.5rem" }}>{metric.name}</span>
         {expandable ? (
           <span className={styles.MetricCount}>
-            {metric.values.length} values
+            {metric.children.length} labels
           </span>
-        ) : metric.values.length > 0 ? (
-          <MetricValueItem value={metric.values[0]} unit={metric.unit} />
+        ) : metric.value ? (
+          <MetricValueItem
+            value={metric.value}
+            labels={metric.labels}
+            unit={metric.unit}
+          />
         ) : (
           <span className={styles.MetricCount}>no values</span>
         )}
       </button>
       {expandable && (
         <ul style={{ display: expanded ? "block" : "none" }}>
-          {metric.values.map((value, index) => (
+          {metric.children.map((child, index) => (
             <li>
-              <MetricValueItem key={index} value={value} unit={metric.unit} />
+              <MetricValueItem
+                key={index}
+                value={child.value}
+                labels={child.labels}
+                unit={metric.unit}
+              />
             </li>
           ))}
         </ul>

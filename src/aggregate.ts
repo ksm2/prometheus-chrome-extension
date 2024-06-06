@@ -1,14 +1,10 @@
-import { InstructionLine, MetricLine, Metrics, Unit } from "./model";
+import { InstructionLine, Metric, MetricLine, Metrics, Unit } from "./model";
 
 export function aggregate(lines: (InstructionLine | MetricLine)[]) {
   const metrics: Metrics = {};
   for (const line of lines) {
     if (line.type === "instruction") {
-      metrics[line.name] ??= {
-        name: line.name,
-        unit: deductUnitFromName(line.name),
-        values: [],
-      };
+      metrics[line.name] ??= createMetric(line.name);
       if (line.instr === "TYPE") {
         metrics[line.name].type = line.value;
       } else if (line.instr === "HELP") {
@@ -17,15 +13,38 @@ export function aggregate(lines: (InstructionLine | MetricLine)[]) {
     } else if (line.type === "metric") {
       const { name, kind } = getMetricName(line);
 
-      metrics[name] ??= { name, unit: deductUnitFromName(name), values: [] };
-      metrics[name].values.push({
-        labels: line.labels,
-        value: line.value,
-        kind,
-      });
+      metrics[name] ??= createMetric(name);
+      if (metrics[name].children.length > 0) {
+        metrics[name].children.push({
+          labels: line.labels,
+          value: line.value,
+        });
+      } else if (metrics[name].value === undefined) {
+        metrics[name].labels = line.labels;
+        metrics[name].value = line.value;
+      } else {
+        metrics[name].children.push({
+          labels: metrics[name].labels,
+          value: metrics[name].value!,
+        });
+        metrics[name].value = undefined;
+        metrics[name].children.push({
+          labels: line.labels,
+          value: line.value,
+        });
+      }
     }
   }
   return sortMetrics(metrics);
+}
+
+function createMetric(name: string): Metric {
+  return {
+    name,
+    unit: deductUnitFromName(name),
+    children: [],
+    labels: {},
+  };
 }
 
 function getMetricName(line: MetricLine): { name: string; kind?: string } {

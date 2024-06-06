@@ -1,19 +1,20 @@
 import React from "react";
-import { MetricValue, Unit } from "../model";
+import { Labels, Unit } from "../model";
 import { LabelDisplay } from "./LabelDisplay";
-import * as styles from "./styles.module.css";
 import { ValueWithOptionalUnit } from "./ValueWithOptionalUnit";
+import * as styles from "./styles.module.css";
 
 interface Props {
-  value: MetricValue;
+  value: string;
+  labels: Labels;
   unit?: Unit;
 }
 
-export function MetricValueItem({ value, unit }: Props) {
+export function MetricValueItem({ value, labels, unit }: Props) {
   return (
     <span className={styles.MetricValueItem}>
-      <ValueWithOptionalUnit unit={unit}>{value.value}</ValueWithOptionalUnit>{" "}
-      <LabelDisplay labels={value.labels} />
+      <LabelDisplay labels={labels} />
+      <ValueWithOptionalUnit unit={unit}>{value}</ValueWithOptionalUnit>
     </span>
   );
 }

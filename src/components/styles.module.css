@@ -58,6 +58,8 @@
 .MetricValueItem {
     font-weight: normal;
     font-family: monospace;
+    display: inline-flex;
+    gap: 0.5rem;
 }
 
 .LabelDisplay {
@@ -71,7 +73,7 @@
 
 .LabelValue {
     font-style: italic;
-    color: orange;
+    color: #db7900;
 }
 
 .Chevron {

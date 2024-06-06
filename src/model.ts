@@ -23,7 +23,15 @@ export interface Metric {
   type?: string;
   help?: string;
   unit?: Unit;
-  values: MetricValue[];
+  labels: Labels;
+  children: ChildMetric[];
+  value?: string;
+}
+
+export interface ChildMetric {
+  unit?: Unit;
+  labels: Labels;
+  value: string;
 }
 
 export type Unit =
@@ -33,12 +41,6 @@ export type Unit =
   | "micros"
   | "nanos"
   | "bytes";
-
-export interface MetricValue {
-  labels: Labels;
-  value: string;
-  kind?: string;
-}
 
 export interface Labels {
   [key: string]: string;
