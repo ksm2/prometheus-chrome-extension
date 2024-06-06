@@ -34,9 +34,8 @@ export function MetricItem({ metric }: { metric: Metric }) {
       {expandable && (
         <ul style={{ display: expanded ? "block" : "none" }}>
           {metric.children.map((child, index) => (
-            <li>
+            <li key={index}>
               <MetricValueItem
-                key={index}
                 value={child.value}
                 labels={child.labels}
                 unit={metric.unit}

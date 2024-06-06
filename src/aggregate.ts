@@ -1,4 +1,13 @@
-import { InstructionLine, Metric, MetricLine, Metrics, Unit } from "./model";
+import {
+  ChildMetric,
+  Histogram,
+  InstructionLine,
+  Labels,
+  Metric,
+  MetricLine,
+  Metrics,
+  Unit,
+} from "./model";
 
 export function aggregate(lines: (InstructionLine | MetricLine)[]) {
   const metrics: Metrics = {};
@@ -14,28 +23,31 @@ export function aggregate(lines: (InstructionLine | MetricLine)[]) {
       const { name, kind } = getMetricName(line);
 
       metrics[name] ??= createMetric(name);
-      if (metrics[name].children.length > 0) {
-        metrics[name].children.push({
-          labels: line.labels,
-          value: line.value,
-        });
-      } else if (metrics[name].value === undefined) {
-        metrics[name].labels = line.labels;
-        metrics[name].value = line.value;
-      } else {
-        metrics[name].children.push({
-          labels: metrics[name].labels,
-          value: metrics[name].value!,
-        });
-        metrics[name].value = undefined;
-        metrics[name].children.push({
-          labels: line.labels,
-          value: line.value,
-        });
-      }
+
+      createMetricValue(metrics[name], line, kind);
     }
   }
   return sortMetrics(metrics);
+}
+
+function pushChild(metric: Metric, child: ChildMetric) {
+  if (metric.children.length > 0) {
+    metric.children.push(child);
+    return;
+  }
+
+  if (metric.value === undefined) {
+    metric.labels = child.labels;
+    metric.value = child.value;
+    return;
+  }
+
+  metric.children.push({
+    labels: metric.labels,
+    value: metric.value,
+  });
+  metric.value = undefined;
+  metric.children.push(child);
 }
 
 function createMetric(name: string): Metric {
@@ -45,6 +57,69 @@ function createMetric(name: string): Metric {
     children: [],
     labels: {},
   };
+}
+
+function createMetricValue(
+  metric: Metric,
+  line: MetricLine,
+  kind?: string,
+): void {
+  if (kind === undefined) {
+    pushChild(metric, {
+      labels: line.labels,
+      value: { type: "literal", value: line.value },
+    });
+    return;
+  }
+
+  const { le: _, ...labelsToLookFor } = line.labels;
+  const histogram = getHistogram(metric, labelsToLookFor);
+  switch (kind) {
+    case "bucket":
+      histogram.buckets.push({
+        le: line.labels.le,
+        value: line.value,
+      });
+      break;
+    case "sum":
+      histogram.sum = line.value;
+      break;
+    case "count":
+      histogram.count = line.value;
+      break;
+  }
+}
+
+function getHistogram(metric: Metric, labels: Labels): Histogram {
+  for (const child of metric.children) {
+    if (labelsEqual(child.labels, labels)) {
+      return child.value as Histogram;
+    }
+  }
+
+  if (labelsEqual(metric.labels, labels)) {
+    return metric.value as Histogram;
+  }
+
+  const histogram: Histogram = {
+    type: "histogram",
+    buckets: [],
+  };
+  pushChild(metric, {
+    labels,
+    value: histogram,
+  });
+  return histogram;
+}
+
+function labelsEqual(a: Labels, b: Labels): boolean {
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) return false;
+  for (const key of keysA) {
+    if (a[key] !== b[key]) return false;
+  }
+  return true;
 }
 
 function getMetricName(line: MetricLine): { name: string; kind?: string } {

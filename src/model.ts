@@ -25,12 +25,31 @@ export interface Metric {
   unit?: Unit;
   labels: Labels;
   children: ChildMetric[];
-  value?: string;
+  value?: MetricValue;
 }
 
 export interface ChildMetric {
   unit?: Unit;
   labels: Labels;
+  value: MetricValue;
+}
+
+export type MetricValue = Literal | Histogram;
+
+export interface Literal {
+  type: "literal";
+  value: string;
+}
+
+export interface Histogram {
+  type: "histogram";
+  buckets: HistogramBucket[];
+  sum?: string;
+  count?: string;
+}
+
+export interface HistogramBucket {
+  le: string;
   value: string;
 }
 
