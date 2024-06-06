@@ -11,9 +11,9 @@ interface Props {
 
 export function MetricValueItem({ value, unit }: Props) {
   return (
-    <li className={styles.MetricValueItem}>
+    <span className={styles.MetricValueItem}>
       <ValueWithOptionalUnit unit={unit}>{value.value}</ValueWithOptionalUnit>{" "}
       <LabelDisplay labels={value.labels} />
-    </li>
+    </span>
   );
 }

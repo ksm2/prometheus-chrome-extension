@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useState } from "react";
 import { Metric } from "../model";
 import { Chevron } from "./Chevron";
@@ -7,24 +8,34 @@ import * as styles from "./styles.module.css";
 
 export function MetricItem({ metric }: { metric: Metric }) {
   const [expanded, setExpanded] = useState(false);
+  const expandable = metric.values.length > 1;
+  const cn = classNames(styles.MetricItem, { [styles.Expandable]: expandable });
 
   return (
-    <li className={styles.MetricItem}>
+    <li className={cn}>
       <button onClick={() => setExpanded((e) => !e)}>
-        <Chevron open={expanded} />
+        {expandable && <Chevron open={expanded} />}
         <MetricType type={metric.type} />
-        <span>{metric.name}</span>
-        {metric.values.length > 1 && (
+        <span style={{ marginRight: "1rem" }}>{metric.name}</span>
+        {expandable ? (
           <span className={styles.MetricCount}>
-            {metric.values.length} metrics
+            {metric.values.length} values
           </span>
+        ) : metric.values.length > 0 ? (
+          <MetricValueItem value={metric.values[0]} unit={metric.unit} />
+        ) : (
+          <span className={styles.MetricCount}>no values</span>
         )}
       </button>
-      <ul style={{ display: expanded ? "block" : "none" }}>
-        {metric.values.map((value, index) => (
-          <MetricValueItem key={index} value={value} unit={metric.unit} />
-        ))}
-      </ul>
+      {expandable && (
+        <ul style={{ display: expanded ? "block" : "none" }}>
+          {metric.values.map((value, index) => (
+            <li>
+              <MetricValueItem key={index} value={value} unit={metric.unit} />
+            </li>
+          ))}
+        </ul>
+      )}
     </li>
   );
 }

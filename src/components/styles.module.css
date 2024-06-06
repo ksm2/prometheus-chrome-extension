@@ -1,9 +1,10 @@
 .MetricList {
     margin: 1rem;
-    padding: 0;
+    padding: 0 0 0 0.5rem;
 }
 
 .MetricItem {
+    position: relative;
     list-style-type: none;
 }
 
@@ -13,10 +14,13 @@
     font-family: monospace;
     border: none;
     background-color: transparent;
+}
+
+.MetricItem.Expandable > button {
     cursor: pointer;
 }
 
-.MetricItem > button:hover {
+.MetricItem.Expandable > button:hover {
     text-decoration: underline;
 }
 
@@ -46,13 +50,13 @@
 }
 
 .MetricCount {
-    margin-left: 1rem;
     color: gray;
     font-weight: normal;
     font-style: italic;
 }
 
 .MetricValueItem {
+    font-weight: normal;
     font-family: monospace;
 }
 
@@ -71,8 +75,11 @@
 }
 
 .Chevron {
+    position: absolute;
     width: 0;
     height: 0;
+    left: -0.5rem;
+    top: 6px;
 
     display: inline-block;
 
