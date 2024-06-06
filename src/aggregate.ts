@@ -21,7 +21,7 @@ export function aggregate(lines: (InstructionLine | MetricLine)[]) {
       });
     }
   }
-  return metrics;
+  return sortMetrics(metrics);
 }
 
 function getMetricName(line: MetricLine): { name: string; kind?: string } {
@@ -32,4 +32,12 @@ function getMetricName(line: MetricLine): { name: string; kind?: string } {
   if (line.name.endsWith("_count"))
     return { name: line.name.slice(0, -6), kind: "count" };
   return { name: line.name };
+}
+
+function sortMetrics(metrics: Metrics): Metrics {
+  const sortedMetrics: Metrics = {};
+  for (const key of Object.keys(metrics).sort()) {
+    sortedMetrics[key] = metrics[key];
+  }
+  return sortedMetrics;
 }
