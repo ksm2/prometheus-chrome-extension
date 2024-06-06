@@ -77,6 +77,12 @@ function formatSeconds(seconds: number): string {
   if (seconds < 60) {
     return toFixedMax(seconds, 3) + " sec";
   }
+
+  // If it's more than 50 years, interpret it as a date
+  if (seconds > 50 * 365 * 24 * 60 * 60) {
+    return formatDate(new Date(seconds * 1000));
+  }
+
   return formatMinutes(seconds / 60);
 }
 
@@ -84,7 +90,45 @@ function formatMinutes(minutes: number): string {
   if (minutes < 60) {
     return minutes.toFixed(0) + " min";
   }
-  return Math.floor(minutes / 60) + " h " + (minutes % 60) + " min";
+  return formatHours(minutes / 60);
+}
+
+function formatHours(hours: number): string {
+  if (hours < 24) {
+    return Math.floor(hours) + " h " + ((hours * 60) % 60) + " min";
+  }
+  return formatDays(hours / 24);
+}
+
+function formatDays(days: number) {
+  if (days < 7) {
+    return Math.floor(days) + " days";
+  }
+  if (days < 365) {
+    return Math.floor(days / 7) + " weeks " + Math.floor(days % 7) + " days";
+  }
+
+  return Math.floor(days / 365) + " years " + Math.floor(days % 365) + " days";
+}
+
+function formatDate(date: Date): string {
+  const d = date.toISOString().slice(0, 10);
+  const h = padZero(date.getHours(), 2);
+  const m = padZero(date.getMinutes(), 2);
+  const s = padZero(date.getSeconds(), 2);
+  const z = padZero(date.getMilliseconds(), 3);
+  const o = formatTimezoneOffset(date.getTimezoneOffset());
+
+  return `${d} ${h}:${m}:${s}.${z} ${o}`;
+}
+
+function formatTimezoneOffset(o: number): string {
+  const a = Math.abs(o);
+  return `UTC${o < 0 ? "+" : "-"}${padZero(Math.floor(a / 60), 2)}:${padZero(a % 60, 2)}`;
+}
+
+function padZero(str: string | number, len: number): string {
+  return str.toString().padStart(len, "0");
 }
 
 function toFixedMax(num: number, maxDec: number): string {
