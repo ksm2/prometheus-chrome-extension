@@ -1,5 +1,5 @@
 import React from "react";
-import { Metric } from "../model";
+import { HistogramBucket, Metric } from "../model";
 import { MetricType } from "./MetricType";
 import { MetricValueItem } from "./MetricValueItem";
 import * as styles from "./styles.module.css";
@@ -28,6 +28,15 @@ export function MetricItem({ metric }: { metric: Metric }) {
         )}
       </TreeLabel>
       <TreeChildren>
+        {metric.value?.type === "histogram" &&
+          metric.value.buckets.map((bucket, index) => (
+            <TreeNode key={index}>
+              <TreeLabel>
+                <BucketValueItem bucket={bucket} />
+              </TreeLabel>
+            </TreeNode>
+          ))}
+
         {metric.children.map((child, index) => (
           <TreeNode key={index}>
             <TreeLabel>
@@ -37,9 +46,28 @@ export function MetricItem({ metric }: { metric: Metric }) {
                 unit={metric.unit}
               />
             </TreeLabel>
+            <TreeChildren>
+              {child.value.type === "histogram" &&
+                child.value.buckets.map((bucket, index) => (
+                  <TreeNode key={index}>
+                    <TreeLabel>
+                      <BucketValueItem bucket={bucket} />
+                    </TreeLabel>
+                  </TreeNode>
+                ))}
+            </TreeChildren>
           </TreeNode>
         ))}
       </TreeChildren>
     </TreeNode>
+  );
+}
+
+function BucketValueItem({ bucket }: { bucket: HistogramBucket }) {
+  return (
+    <MetricValueItem
+      value={{ type: "literal", value: bucket.value }}
+      labels={{ le: bucket.le }}
+    />
   );
 }

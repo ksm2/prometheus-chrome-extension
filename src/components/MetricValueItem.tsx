@@ -24,12 +24,19 @@ export function MetricValueItem({ value, labels, unit }: Props) {
     case "histogram":
       return (
         <span className={styles.MetricValueItem}>
-          <LabelDisplay labels={labels} />N = {value.count}, Σ ={" "}
-          {value.sum && (
-            <ValueWithOptionalUnit unit={unit}>
-              {value.sum}
-            </ValueWithOptionalUnit>
-          )}
+          <LabelDisplay labels={labels} />
+          <span>N={value.count}</span>
+          <span>
+            Σ=
+            {value.sum && (
+              <ValueWithOptionalUnit unit={unit}>
+                {value.sum}
+              </ValueWithOptionalUnit>
+            )}
+          </span>
+          <span className={styles.MetricCount}>
+            {value.buckets.length} buckets
+          </span>
         </span>
       );
   }
