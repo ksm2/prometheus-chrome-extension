@@ -9,6 +9,8 @@ function onLoad() {
 
   const text = pre.textContent ?? "";
   const lines = parse(text);
+  if (lines.length === 0) return;
+
   const metrics = aggregate(lines);
   render(pre, metrics);
 }
