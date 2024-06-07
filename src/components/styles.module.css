@@ -3,12 +3,18 @@
     padding: 0 0 0 0.5rem;
 }
 
-.MetricItem {
-    position: relative;
+ul.Tree {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.TreeNode {
     list-style-type: none;
 }
 
-.MetricItem > button {
+.TreeLabel {
+    position: relative;
+    padding-left: 1rem;
     appearance: none;
     font-weight: bold;
     font-family: monospace;
@@ -16,11 +22,11 @@
     background-color: transparent;
 }
 
-.MetricItem.Expandable > button {
+.Expandable .TreeLabel {
     cursor: pointer;
 }
 
-.MetricItem.Expandable > button:hover {
+.Expandable .TreeLabel:hover {
     text-decoration: underline;
 }
 
@@ -80,7 +86,7 @@
     position: absolute;
     width: 0;
     height: 0;
-    left: -0.5rem;
+    left: 0;
     top: 6px;
 
     display: inline-block;

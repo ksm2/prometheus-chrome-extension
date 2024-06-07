@@ -1,14 +1,14 @@
 import React from "react";
 import { Metrics } from "../model";
 import { MetricItem } from "./MetricItem";
-import * as styles from "./styles.module.css";
+import { Tree } from "./Tree";
 
 export function App({ metrics }: { metrics: Metrics }) {
   return (
-    <ul className={styles.MetricList}>
+    <Tree>
       {Object.entries(metrics).map(([key, metric]) => (
         <MetricItem key={key} metric={metric} />
       ))}
-    </ul>
+    </Tree>
   );
 }
