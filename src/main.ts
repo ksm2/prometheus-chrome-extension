@@ -1,7 +1,7 @@
-import { aggregate } from "./aggregate";
-import { findPreWithCode } from "./findPre";
-import { parse } from "./parse";
-import { render } from "./render";
+import { aggregate } from "./lib/aggregate";
+import { findPreWithCode } from "./lib/findPre";
+import { parse } from "./lib/parse";
+import { render } from "./lib/render";
 
 function onLoad() {
   const pre = findPreWithCode();

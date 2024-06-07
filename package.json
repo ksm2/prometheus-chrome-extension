@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "format": "prettier --write src/**/*.ts test-server/**/*.js",
-    "build": "esbuild src/viewer.ts --bundle --minify-whitespace --outfile=scripts/viewer.js",
+    "build": "esbuild src/main.ts --bundle --minify-whitespace --outfile=scripts/viewer.js",
     "watch": "yarn run build --watch",
     "test-server": "node test-server/index.js"
   },

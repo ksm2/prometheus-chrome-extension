@@ -1,5 +1,5 @@
 import React from "react";
-import { Unit } from "../model";
+import { Unit } from "../lib/model";
 import { ValueWithUnit } from "./ValueWithUnit";
 
 interface Props {

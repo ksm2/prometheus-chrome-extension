@@ -1,5 +1,5 @@
 import React from "react";
-import { Metrics } from "../model";
+import { Metrics } from "../lib/model";
 import { MetricItem } from "./MetricItem";
 import { Tree } from "./Tree";
 

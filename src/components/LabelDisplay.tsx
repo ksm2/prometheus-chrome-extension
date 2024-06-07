@@ -1,5 +1,5 @@
 import React from "react";
-import { Labels } from "../model";
+import { Labels } from "../lib/model";
 import { CommaSeparatedValues } from "./CommaSeparatedValues";
 import { KeyValuePair } from "./KeyValuePair";
 import { SurroundWithBraces } from "./SurroundWithBraces";

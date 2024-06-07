@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./components/App";
+import { App } from "../components/App";
 import { Metrics } from "./model";
 
 export function render(replace: HTMLPreElement, metrics: Metrics) {

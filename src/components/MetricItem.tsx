@@ -1,5 +1,5 @@
 import React from "react";
-import { HistogramBucket, Metric, SummaryQuantile, Unit } from "../model";
+import { HistogramBucket, Metric, SummaryQuantile, Unit } from "../lib/model";
 import { MetricType } from "./MetricType";
 import { MetricValueItem } from "./MetricValueItem";
 import * as styles from "./prometheus-extension.module.css";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Labels, MetricValue, Unit } from "../model";
+import { Labels, MetricValue, Unit } from "../lib/model";
 import { LabelDisplay } from "./LabelDisplay";
 import { ValueWithOptionalUnit } from "./ValueWithOptionalUnit";
 import * as styles from "./prometheus-extension.module.css";

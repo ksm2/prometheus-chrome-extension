@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useState, MouseEvent } from "react";
-import { format } from "../format";
-import { Unit } from "../model";
+import { format } from "../lib/format";
+import { Unit } from "../lib/model";
 import * as styles from "./prometheus-extension.module.css";
 
 interface Props {
