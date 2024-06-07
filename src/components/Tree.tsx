@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode } from "react";
-import * as styles from "./styles.module.css";
+import * as styles from "./prometheus-extension.module.css";
 
 export interface TreeContextType {
   parent: TreeContextType | null;

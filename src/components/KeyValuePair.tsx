@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "./styles.module.css";
+import * as styles from "./prometheus-extension.module.css";
 
 export function KeyValuePair({ k, v }: { k: string; v: string }) {
   return (

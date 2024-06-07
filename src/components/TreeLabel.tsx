@@ -1,7 +1,7 @@
 import React, { ReactNode, useContext } from "react";
 import { Chevron } from "./Chevron";
 import { TreeContext } from "./Tree";
-import * as styles from "./styles.module.css";
+import * as styles from "./prometheus-extension.module.css";
 
 export function TreeLabel({ children }: { children: ReactNode }) {
   const ctx = useContext(TreeContext);

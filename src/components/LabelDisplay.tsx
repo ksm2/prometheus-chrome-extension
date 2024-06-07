@@ -3,7 +3,7 @@ import { Labels } from "../model";
 import { CommaSeparatedValues } from "./CommaSeparatedValues";
 import { KeyValuePair } from "./KeyValuePair";
 import { SurroundWithBraces } from "./SurroundWithBraces";
-import * as styles from "./styles.module.css";
+import * as styles from "./prometheus-extension.module.css";
 
 export function LabelDisplay({ labels }: { labels: Labels }) {
   const entries = Object.entries(labels);

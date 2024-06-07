@@ -2,7 +2,7 @@ import React from "react";
 import { Labels, MetricValue, Unit } from "../model";
 import { LabelDisplay } from "./LabelDisplay";
 import { ValueWithOptionalUnit } from "./ValueWithOptionalUnit";
-import * as styles from "./styles.module.css";
+import * as styles from "./prometheus-extension.module.css";
 
 interface Props {
   value: MetricValue;

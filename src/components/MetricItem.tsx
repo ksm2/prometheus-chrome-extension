@@ -2,7 +2,7 @@ import React from "react";
 import { HistogramBucket, Metric, SummaryQuantile, Unit } from "../model";
 import { MetricType } from "./MetricType";
 import { MetricValueItem } from "./MetricValueItem";
-import * as styles from "./styles.module.css";
+import * as styles from "./prometheus-extension.module.css";
 import { TreeChildren } from "./TreeChildren";
 import { TreeLabel } from "./TreeLabel";
 import { TreeNode } from "./TreeNode";

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { ReactNode, useContext, useLayoutEffect, useState } from "react";
 import { TreeContext } from "./Tree";
-import * as styles from "./styles.module.css";
+import * as styles from "./prometheus-extension.module.css";
 
 export function TreeNode({ children }: { children: ReactNode }) {
   const ctx = useContext(TreeContext);
