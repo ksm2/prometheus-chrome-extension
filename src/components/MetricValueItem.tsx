@@ -39,5 +39,23 @@ export function MetricValueItem({ value, labels, unit }: Props) {
           </span>
         </span>
       );
+    case "summary":
+      return (
+        <span className={styles.MetricValueItem}>
+          <LabelDisplay labels={labels} />
+          <span>N={value.count}</span>
+          <span>
+            Σ=
+            {value.sum && (
+              <ValueWithOptionalUnit unit={unit}>
+                {value.sum}
+              </ValueWithOptionalUnit>
+            )}
+          </span>
+          <span className={styles.MetricCount}>
+            {value.quantiles.length} quantiles
+          </span>
+        </span>
+      );
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { HistogramBucket, Metric } from "../model";
+import { HistogramBucket, Metric, SummaryQuantile, Unit } from "../model";
 import { MetricType } from "./MetricType";
 import { MetricValueItem } from "./MetricValueItem";
 import * as styles from "./styles.module.css";
@@ -36,6 +36,14 @@ export function MetricItem({ metric }: { metric: Metric }) {
               </TreeLabel>
             </TreeNode>
           ))}
+        {metric.value?.type === "summary" &&
+          metric.value.quantiles.map((quantile, index) => (
+            <TreeNode key={index}>
+              <TreeLabel>
+                <QuantileValueItem quantile={quantile} unit={metric.unit} />
+              </TreeLabel>
+            </TreeNode>
+          ))}
 
         {metric.children.map((child, index) => (
           <TreeNode key={index}>
@@ -55,6 +63,17 @@ export function MetricItem({ metric }: { metric: Metric }) {
                     </TreeLabel>
                   </TreeNode>
                 ))}
+              {child.value?.type === "summary" &&
+                child.value.quantiles.map((quantile, index) => (
+                  <TreeNode key={index}>
+                    <TreeLabel>
+                      <QuantileValueItem
+                        quantile={quantile}
+                        unit={metric.unit}
+                      />
+                    </TreeLabel>
+                  </TreeNode>
+                ))}
             </TreeChildren>
           </TreeNode>
         ))}
@@ -68,6 +87,22 @@ function BucketValueItem({ bucket }: { bucket: HistogramBucket }) {
     <MetricValueItem
       value={{ type: "literal", value: bucket.value }}
       labels={{ le: bucket.le }}
+    />
+  );
+}
+
+function QuantileValueItem({
+  quantile,
+  unit,
+}: {
+  quantile: SummaryQuantile;
+  unit?: Unit;
+}) {
+  return (
+    <MetricValueItem
+      value={{ type: "literal", value: quantile.value }}
+      labels={{ quantile: quantile.quantile }}
+      unit={unit}
     />
   );
 }

@@ -6,6 +6,7 @@ import {
   Metric,
   MetricLine,
   Metrics,
+  Summary,
   Unit,
 } from "./model";
 
@@ -65,6 +66,16 @@ function createMetricValue(
   kind?: string,
 ): void {
   if (kind === undefined) {
+    if (line.labels.quantile !== undefined) {
+      const { quantile: _, ...labelsToLookFor } = line.labels;
+      const summary = getSummary(metric, labelsToLookFor);
+      summary.quantiles.push({
+        quantile: line.labels.quantile,
+        value: line.value,
+      });
+      return;
+    }
+
     pushChild(metric, {
       labels: line.labels,
       value: { type: "literal", value: line.value },
@@ -110,6 +121,28 @@ function getHistogram(metric: Metric, labels: Labels): Histogram {
     value: histogram,
   });
   return histogram;
+}
+
+function getSummary(metric: Metric, labels: Labels): Summary {
+  for (const child of metric.children) {
+    if (labelsEqual(child.labels, labels)) {
+      return child.value as Summary;
+    }
+  }
+
+  if (labelsEqual(metric.labels, labels)) {
+    return metric.value as Summary;
+  }
+
+  const summary: Summary = {
+    type: "summary",
+    quantiles: [],
+  };
+  pushChild(metric, {
+    labels,
+    value: summary,
+  });
+  return summary;
 }
 
 function labelsEqual(a: Labels, b: Labels): boolean {

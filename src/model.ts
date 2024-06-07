@@ -34,7 +34,7 @@ export interface ChildMetric {
   value: MetricValue;
 }
 
-export type MetricValue = Literal | Histogram;
+export type MetricValue = Literal | Histogram | Summary;
 
 export interface Literal {
   type: "literal";
@@ -50,6 +50,18 @@ export interface Histogram {
 
 export interface HistogramBucket {
   le: string;
+  value: string;
+}
+
+export interface Summary {
+  type: "summary";
+  quantiles: SummaryQuantile[];
+  sum?: string;
+  count?: string;
+}
+
+export interface SummaryQuantile {
+  quantile: string;
   value: string;
 }
 
