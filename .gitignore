@@ -1,5 +1,6 @@
 ### Extension ###
 scripts/
+*.zip
 
 ### Node.js ###
 node_modules/
