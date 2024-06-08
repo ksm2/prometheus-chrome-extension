@@ -7,9 +7,9 @@ This is a Chrome extension that allows you to monitor your Prometheus instances 
 ## Features
 
 <div class="center">
-<img alt="Pretty overview of metrics" src="./screenshots/screenshot-01.png" width="300">
-<img alt="Detailed view of histograms and summaries" src="./screenshots/screenshot-02.png" width="300">
-<img alt="Grouping by labels" src="./screenshots/screenshot-03.png" width="300">
+<img alt="Pretty overview of metrics" src="./screenshots/screenshot-01.png" width="250">
+<img alt="Detailed view of histograms and summaries" src="./screenshots/screenshot-02.png" width="250">
+<img alt="Grouping by labels" src="./screenshots/screenshot-03.png" width="250">
 </div>
 
 - Pretty overview of metrics
