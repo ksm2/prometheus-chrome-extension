@@ -3,16 +3,27 @@ import { HistogramBucket, Metric, SummaryQuantile, Unit } from "../lib/model";
 import { MetricType } from "./MetricType";
 import { MetricValueItem } from "./MetricValueItem";
 import * as styles from "./prometheus-extension.module.css";
+import { Tooltip } from "./Tooltip";
 import { TreeChildren } from "./TreeChildren";
 import { TreeLabel } from "./TreeLabel";
 import { TreeNode } from "./TreeNode";
 
 export function MetricItem({ metric }: { metric: Metric }) {
+  const tooltipText = (
+    <>
+      Type: {capitalize(metric.type ?? "unknown")}
+      <br />
+      Help: {metric.help}
+    </>
+  );
+
   return (
     <TreeNode>
       <TreeLabel>
-        <MetricType type={metric.type} />
-        <span style={{ marginRight: "0.5rem" }}>{metric.name}</span>
+        <Tooltip text={tooltipText}>
+          <MetricType type={metric.type} />
+          <span style={{ marginRight: "0.5rem" }}>{metric.name}</span>
+        </Tooltip>
         {metric.children.length > 1 ? (
           <span className={styles.MetricCount}>
             {metric.children.length} labels
@@ -80,6 +91,11 @@ export function MetricItem({ metric }: { metric: Metric }) {
       </TreeChildren>
     </TreeNode>
   );
+}
+
+function capitalize(str: string): string {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function BucketValueItem({ bucket }: { bucket: HistogramBucket }) {

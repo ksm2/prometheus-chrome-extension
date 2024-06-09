@@ -112,3 +112,20 @@ ul.Tree {
 .ValueWithUnit.Original {
     color: gray;
 }
+
+.Tooltip {
+    background: rgb(252, 252, 252);
+    border: 1px solid black;
+    padding: 0.25rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 999999;
+    text-align: left;
+    box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+.Tooltip.Visible {
+    display: block;
+}
