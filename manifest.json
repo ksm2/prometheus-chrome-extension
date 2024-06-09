@@ -13,7 +13,6 @@
     "default_popup": "prometheus.html",
     "default_icon": "icons/prometheus-48.png"
   },
-  "permissions": ["activeTab"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
