@@ -35,9 +35,21 @@ function parseLine(line: string): Line | null {
 
   const metricMatch = METRIC_PATTERN.exec(line);
   if (metricMatch) {
-    const { name, labels: rawLabels, value } = metricMatch.groups!;
+    const {
+      name,
+      labels: rawLabels,
+      value,
+      timestamp: rawTimestamp,
+    } = metricMatch.groups!;
     const labels = normalizeRawLabels(rawLabels);
-    return { type: "metric", name, labels, value } satisfies MetricLine;
+    const timestamp = rawTimestamp ? parseInt(rawTimestamp) : undefined;
+    return {
+      type: "metric",
+      name,
+      labels,
+      value,
+      timestamp,
+    } satisfies MetricLine;
   }
 
   return null;

@@ -12,6 +12,7 @@ export interface MetricLine {
   name: string;
   labels: Labels;
   value: string;
+  timestamp?: number;
 }
 
 export interface Metrics {
