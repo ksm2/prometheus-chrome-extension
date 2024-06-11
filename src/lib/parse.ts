@@ -19,7 +19,7 @@ function splitLines(input: string): string[] {
 const INSTR_PATTERN = /^#\s+(?<instr>\w+)\s+(?<name>.*?)\s+(?<value>.*)$/;
 
 const METRIC_PATTERN =
-  /^(?<name>[a-zA-Z0-9_]+)(\{(?<labels>.*)})?\s+(?<value>.*)$/;
+  /^(?<name>[a-zA-Z0-9_]+)(\{(?<labels>.*)})?\s+(?<value>[+-]?(\.[0-9]+|[0-9]+|[0-9]+\.[0-9]*)([eE][+-]?[0-9]+)?|[+-]Inf|NaN)$/;
 
 function parseLine(line: string): Line | null {
   const instrMatch = INSTR_PATTERN.exec(line);
