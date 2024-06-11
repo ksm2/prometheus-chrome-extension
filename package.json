@@ -1,6 +1,6 @@
 {
   "name": "prometheus-chrome-extension",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "author": "Konstantin Simon Maria Möllers <ksm.moellers@gmail.com>",
   "license": "MIT",

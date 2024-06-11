@@ -16,6 +16,7 @@ This is a Chrome extension that allows you to monitor your Prometheus instances 
 - Formats values in human-readable units
 - Groups metrics by labels
 - Detailed view of histograms and summaries
+- Tooltip with metric description
 
 
 ## Installation
