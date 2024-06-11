@@ -9,10 +9,6 @@
     "48": "icons/prometheus-48.png",
     "128": "icons/prometheus-128.png"
   },
-  "action": {
-    "default_popup": "prometheus.html",
-    "default_icon": "icons/prometheus-48.png"
-  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
