@@ -1,5 +1,5 @@
-Prometheus Chrome Extension
-===========================
+[Prometheus Chrome Extension][CWS]
+==================================
 
 This is a Chrome extension that allows you to monitor your Prometheus instances from your browser.
 
@@ -39,3 +39,6 @@ To build the extension, run:
 yarn install
 yarn build
 ```
+
+
+[CWS]: https://chromewebstore.google.com/detail/prometheus-viewer/cbemcojgcihplgfjjdoplpfjmamiikcn
