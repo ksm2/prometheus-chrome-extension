@@ -1,8 +1,8 @@
 import {
   ChildMetric,
   Histogram,
-  InstructionLine,
   Labels,
+  Line,
   Metric,
   MetricLine,
   Metrics,
@@ -10,7 +10,7 @@ import {
   Unit,
 } from "./model";
 
-export function aggregate(lines: (InstructionLine | MetricLine)[]) {
+export function aggregate(lines: Line[]) {
   const metrics: Metrics = {};
   for (const line of lines) {
     if (line.type === "instruction") {
@@ -21,11 +21,15 @@ export function aggregate(lines: (InstructionLine | MetricLine)[]) {
         metrics[line.name].help = line.value;
       }
     } else if (line.type === "metric") {
-      const { name, kind } = getMetricName(line);
+      if (metrics[line.name] !== undefined) {
+        createMetricValue(metrics[line.name], line);
+      } else {
+        const { name, kind } = getMetricName(line);
 
-      metrics[name] ??= createMetric(name);
+        metrics[name] ??= createMetric(name);
 
-      createMetricValue(metrics[name], line, kind);
+        createMetricValue(metrics[name], line, kind);
+      }
     }
   }
   return sortMetrics(metrics);

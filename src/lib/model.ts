@@ -7,12 +7,29 @@ export interface InstructionLine {
   value: string;
 }
 
+export function instruction(
+  instr: "TYPE" | "HELP",
+  name: string,
+  value: string,
+): InstructionLine {
+  return { type: "instruction", instr, name, value };
+}
+
 export interface MetricLine {
   type: "metric";
   name: string;
   labels: Labels;
   value: string;
   timestamp?: number;
+}
+
+export function metric(
+  name: string,
+  value: string,
+  labels: Labels = {},
+  timestamp?: number,
+): MetricLine {
+  return { type: "metric", name, labels, value, timestamp };
 }
 
 export interface Metrics {
