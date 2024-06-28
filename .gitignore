@@ -4,3 +4,8 @@ scripts/
 
 ### Node.js ###
 node_modules/
+
+### IDE ###
+.vscode/
+.idea/
+*.iml
