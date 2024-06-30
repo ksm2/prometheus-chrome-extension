@@ -93,7 +93,7 @@ ul.Tree {
 
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
-    border-left: 8px solid black;
+    border-left: 8px solid buttontext;
 
     margin-right: 0.25rem;
     transition: 0.2s transform;
@@ -114,6 +114,7 @@ ul.Tree {
 }
 
 .Tooltip {
+    color: black;
     background: rgb(252, 252, 252);
     border: 1px solid black;
     padding: 0.25rem;
