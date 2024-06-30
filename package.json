@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "format": "prettier --write src/**/*.{css,ts} test-server/**/*.js",
+    "format": "prettier --write src/**/*.{css,ts,tsx} test-server/**/*.js",
     "build": "esbuild src/main.ts --bundle --minify-whitespace --outfile=scripts/viewer.js",
     "watch": "yarn run build --watch",
     "zip": "zip -r prometheus-chrome-extension.zip manifest.json scripts/ icons/",
