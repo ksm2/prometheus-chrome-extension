@@ -2,6 +2,24 @@ import { aggregate } from "../../src/lib/aggregate";
 import { instruction, Line, metric } from "../../src/lib/model";
 
 describe("aggregate", () => {
+  it("should aggregate a metric without a value", () => {
+    const lines: Line[] = [
+      instruction("TYPE", "empty_metric", "gauge"),
+      instruction("HELP", "empty_metric", "It has no value."),
+    ];
+    const result = aggregate(lines);
+    expect(result).toEqual({
+      empty_metric: {
+        name: "empty_metric",
+        help: "It has no value.",
+        type: "gauge",
+        children: [],
+        labels: {},
+        value: undefined,
+      },
+    });
+  });
+
   it("should aggregate a single metric", () => {
     const lines: Line[] = [
       instruction("TYPE", "metric_name", "counter"),
@@ -40,6 +58,25 @@ describe("aggregate", () => {
         children: [],
         labels: {},
         value: { type: "literal", value: "1337" },
+      },
+    });
+  });
+
+  it("should aggregate a gauge having a quantile label", () => {
+    const lines: Line[] = [
+      instruction("TYPE", "not_a_summary", "gauge"),
+      instruction("HELP", "not_a_summary", "I am not a summary."),
+      metric("not_a_summary", "42.13", { quantile: "0.99" }),
+    ];
+    const result = aggregate(lines);
+    expect(result).toEqual({
+      not_a_summary: {
+        name: "not_a_summary",
+        help: "I am not a summary.",
+        type: "gauge",
+        children: [],
+        labels: { quantile: "0.99" },
+        value: { type: "literal", value: "42.13" },
       },
     });
   });

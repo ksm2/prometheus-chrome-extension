@@ -73,11 +73,13 @@ function createMetricValue(
     if (line.labels.quantile !== undefined) {
       const { quantile: _, ...labelsToLookFor } = line.labels;
       const summary = getSummary(metric, labelsToLookFor);
-      summary.quantiles.push({
-        quantile: line.labels.quantile,
-        value: line.value,
-      });
-      return;
+      if (summary !== undefined) {
+        summary.quantiles.push({
+          quantile: line.labels.quantile,
+          value: line.value,
+        });
+        return;
+      }
     }
 
     pushChild(metric, {
@@ -127,15 +129,15 @@ function getHistogram(metric: Metric, labels: Labels): Histogram {
   return histogram;
 }
 
-function getSummary(metric: Metric, labels: Labels): Summary {
+function getSummary(metric: Metric, labels: Labels): Summary | undefined {
   for (const child of metric.children) {
     if (labelsEqual(child.labels, labels)) {
-      return child.value as Summary;
+      return child.value as Summary | undefined;
     }
   }
 
   if (labelsEqual(metric.labels, labels)) {
-    return metric.value as Summary;
+    return metric.value as Summary | undefined;
   }
 
   const summary: Summary = {
