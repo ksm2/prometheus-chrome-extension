@@ -1,5 +1,11 @@
 import React from "react";
-import { HistogramBucket, Metric, SummaryQuantile, Unit } from "../lib/model";
+import {
+  HistogramBucket,
+  Metric,
+  MetricType,
+  SummaryQuantile,
+  Unit,
+} from "../lib/model";
 import { MetricTypePill } from "./MetricTypePill";
 import { MetricValueItem } from "./MetricValueItem";
 import * as styles from "./prometheus-extension.module.css";
@@ -11,9 +17,9 @@ import { TreeNode } from "./TreeNode";
 export function MetricItem({ metric }: { metric: Metric }) {
   const tooltipText = (
     <>
-      Type: {capitalize(metric.type ?? "unknown")}
+      Type: {prettifyMetricType(metric.type)}
       <br />
-      Help: {metric.help}
+      Help: {metric.help ?? "(Not provided)"}
     </>
   );
 
@@ -93,9 +99,25 @@ export function MetricItem({ metric }: { metric: Metric }) {
   );
 }
 
-function capitalize(str: string): string {
-  if (!str) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1);
+function prettifyMetricType(metricType: MetricType): string {
+  switch (metricType) {
+    case "counter":
+      return "Counter";
+    case "gauge":
+      return "Gauge";
+    case "histogram":
+      return "Histogram";
+    case "gaugehistogram":
+      return "Gauge Histogram";
+    case "info":
+      return "Info";
+    case "stateset":
+      return "State Set";
+    case "summary":
+      return "Summary";
+    default:
+      return "Unknown";
+  }
 }
 
 function BucketValueItem({ bucket }: { bucket: HistogramBucket }) {
