@@ -38,13 +38,23 @@ export interface Metrics {
 
 export interface Metric {
   name: string;
-  type?: string;
+  type: MetricType;
   help?: string;
   unit?: Unit;
   labels: Labels;
   children: ChildMetric[];
   value?: MetricValue;
 }
+
+export type MetricType =
+  | "counter"
+  | "gauge"
+  | "histogram"
+  | "gaugehistogram"
+  | "stateset"
+  | "info"
+  | "summary"
+  | "unknown";
 
 export interface ChildMetric {
   unit?: Unit;

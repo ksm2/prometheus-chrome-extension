@@ -1,40 +1,50 @@
 import {
   ChildMetric,
   Histogram,
+  InstructionLine,
   Labels,
   Line,
   Metric,
   MetricLine,
   Metrics,
+  MetricType,
   Summary,
   Unit,
 } from "./model";
 
-export function aggregate(lines: Line[]) {
+export function aggregate(lines: Line[]): Metrics {
   const metrics: Metrics = {};
   for (const line of lines) {
     if (line.type === "instruction") {
-      metrics[line.name] ??= createMetric(line.name);
-      if (line.instr === "TYPE") {
-        metrics[line.name].type = line.value;
-      } else if (line.instr === "HELP") {
-        metrics[line.name].help = line.value;
-      } else if (line.instr === "UNIT") {
-        metrics[line.name].unit = parseUnit(line.value);
-      }
+      aggregateInstruction(metrics, line);
     } else if (line.type === "metric") {
-      if (metrics[line.name] !== undefined) {
-        createMetricValue(metrics[line.name], line);
-      } else {
-        const { name, kind } = getMetricName(line);
-
-        metrics[name] ??= createMetric(name);
-
-        createMetricValue(metrics[name], line, kind);
-      }
+      aggregateMetric(metrics, line);
     }
   }
   return sortMetrics(metrics);
+}
+
+function aggregateInstruction(metrics: Metrics, line: InstructionLine) {
+  metrics[line.name] ??= createMetric(line.name);
+  if (line.instr === "TYPE") {
+    metrics[line.name].type = parseMetricType(line.value);
+  } else if (line.instr === "HELP") {
+    metrics[line.name].help = line.value;
+  } else if (line.instr === "UNIT") {
+    metrics[line.name].unit = parseUnit(line.value);
+  }
+}
+
+function aggregateMetric(metrics: Metrics, line: MetricLine) {
+  if (metrics[line.name] !== undefined) {
+    createMetricValue(metrics[line.name], line);
+  } else {
+    const { name, kind } = getMetricName(line);
+
+    metrics[name] ??= createMetric(name);
+
+    createMetricValue(metrics[name], line, kind);
+  }
 }
 
 function pushChild(metric: Metric, child: ChildMetric) {
@@ -60,10 +70,27 @@ function pushChild(metric: Metric, child: ChildMetric) {
 function createMetric(name: string): Metric {
   return {
     name,
+    type: "unknown",
     unit: deductUnitFromName(name),
     children: [],
     labels: {},
   };
+}
+
+function parseMetricType(type: string): MetricType {
+  const lowerCase = type.toLowerCase();
+  switch (lowerCase) {
+    case "counter":
+    case "gauge":
+    case "histogram":
+    case "gaugehistogram":
+    case "stateset":
+    case "info":
+    case "summary":
+      return lowerCase;
+    default:
+      return "unknown";
+  }
 }
 
 function createMetricValue(
