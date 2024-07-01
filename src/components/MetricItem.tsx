@@ -13,6 +13,7 @@ import { Tooltip } from "./Tooltip";
 import { TreeChildren } from "./TreeChildren";
 import { TreeLabel } from "./TreeLabel";
 import { TreeNode } from "./TreeNode";
+import { LabelDisplay } from "./LabelDisplay";
 
 export function MetricItem({ metric }: { metric: Metric }) {
   const tooltipText = (
@@ -31,8 +32,11 @@ export function MetricItem({ metric }: { metric: Metric }) {
           <span style={{ marginRight: "0.5rem" }}>{metric.name}</span>
         </Tooltip>
         {metric.children.length > 1 ? (
-          <span className={styles.MetricCount}>
-            {metric.children.length} labels
+          <span className={styles.MetricValueItem}>
+            <LabelDisplay labels={metric.labels} />
+            <span className={styles.MetricCount}>
+              {metric.children.length} labels
+            </span>
           </span>
         ) : metric.value ? (
           <MetricValueItem

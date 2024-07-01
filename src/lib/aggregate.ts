@@ -21,6 +21,7 @@ export function aggregate(lines: Line[]): Metrics {
       aggregateMetric(metrics, line);
     }
   }
+  aggregateLabels(metrics);
   return sortMetrics(metrics);
 }
 
@@ -68,6 +69,7 @@ function pushChild(metric: Metric, child: ChildMetric) {
     value: metric.value,
   });
   metric.value = undefined;
+  metric.labels = {};
   metric.children.push(child);
 }
 
@@ -251,6 +253,35 @@ function parseUnit(unit: string): Unit | undefined {
       return unit;
     default:
       return undefined;
+  }
+}
+
+function aggregateLabels(metrics: Metrics) {
+  metricLoop: for (const metric of Object.values(metrics)) {
+    if (metric.children.length > 0) {
+      let labels: Labels = { ...metric.children[0].labels };
+      for (let i = 1; i < metric.children.length; i++) {
+        const child = metric.children[i];
+        for (const [key, value] of Object.entries(labels)) {
+          if (child.labels[key] !== value) {
+            delete labels[key];
+          }
+        }
+
+        if (Object.keys(labels).length === 0) {
+          continue metricLoop;
+        }
+      }
+
+      if (Object.keys(labels).length > 0) {
+        metric.labels = labels;
+        for (const child of metric.children) {
+          for (const key of Object.keys(labels)) {
+            delete child.labels[key];
+          }
+        }
+      }
+    }
   }
 }
 

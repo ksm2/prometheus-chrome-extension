@@ -167,4 +167,48 @@ describe("aggregate", () => {
       },
     });
   });
+
+  it("should aggregate common labels of children", () => {
+    const lines: Line[] = [
+      instruction("TYPE", "label_example", "gauge"),
+      metric("label_example", "1", {
+        common: "label",
+        service: "my_app",
+        instance: "1",
+      }),
+      metric("label_example", "2", {
+        common: "label",
+        service: "my_app",
+        instance: "2",
+      }),
+      metric("label_example", "3", {
+        common: "label",
+        service: "my_app",
+        instance: "3",
+      }),
+    ];
+    const result = aggregate(lines);
+    expect(result).toEqual({
+      label_example: {
+        name: "label_example",
+        type: "gauge",
+        children: [
+          {
+            labels: { instance: "1" },
+            value: { type: "literal", value: "1" },
+          },
+          {
+            labels: { instance: "2" },
+            value: { type: "literal", value: "2" },
+          },
+          {
+            labels: { instance: "3" },
+            value: { type: "literal", value: "3" },
+          },
+        ],
+        labels: { common: "label", service: "my_app" },
+        value: undefined,
+      },
+    });
+  });
 });
