@@ -20,6 +20,7 @@ ul.Tree {
   font-family: monospace;
   border: none;
   background-color: transparent;
+  text-align: left;
 }
 
 .Expandable .TreeLabel {
