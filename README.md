@@ -1,7 +1,11 @@
-[Prometheus Chrome Extension][CWS]
-==================================
+[Prometheus Viewer][CWS]
+========================
 
-This is a Chrome extension that allows you to monitor your Prometheus instances from your browser.
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/cbemcojgcihplgfjjdoplpfjmamiikcn)][CWS]
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/cbemcojgcihplgfjjdoplpfjmamiikcn)][CWS]
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/cbemcojgcihplgfjjdoplpfjmamiikcn)][CWS]
+
+This is a Chrome Extension that allows you to monitor your Prometheus instances from your browser.
 
 
 ## Features
@@ -17,6 +21,8 @@ This is a Chrome extension that allows you to monitor your Prometheus instances 
 - Groups metrics by labels
 - Detailed view of histograms and summaries
 - Tooltip with metric description
+- Aggregates common labels
+- Supports the [OpenMetrics][OM] format
 - Dark mode support
 
 
@@ -43,3 +49,4 @@ yarn build
 
 
 [CWS]: https://chromewebstore.google.com/detail/prometheus-viewer/cbemcojgcihplgfjjdoplpfjmamiikcn
+[OM]: https://openmetrics.io/
