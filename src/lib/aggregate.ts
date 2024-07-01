@@ -19,6 +19,8 @@ export function aggregate(lines: Line[]) {
         metrics[line.name].type = line.value;
       } else if (line.instr === "HELP") {
         metrics[line.name].help = line.value;
+      } else if (line.instr === "UNIT") {
+        metrics[line.name].unit = parseUnit(line.value);
       }
     } else if (line.type === "metric") {
       if (metrics[line.name] !== undefined) {
@@ -172,13 +174,28 @@ function getMetricName(line: MetricLine): { name: string; kind?: string } {
 }
 
 function deductUnitFromName(name: string): Unit | undefined {
-  if (name.endsWith("_bytes")) return "bytes";
-  if (name.endsWith("_seconds")) return "seconds";
-  if (name.endsWith("_minutes")) return "minutes";
-  if (name.endsWith("_millis")) return "millis";
-  if (name.endsWith("_micros")) return "micros";
-  if (name.endsWith("_nanos")) return "nanos";
-  return undefined;
+  const last = lastSegment(name);
+  return parseUnit(last);
+}
+
+function lastSegment(name: string): string {
+  const index = name.lastIndexOf("_");
+  if (index === -1) return name;
+  return name.slice(index + 1);
+}
+
+function parseUnit(unit: string): Unit | undefined {
+  switch (unit) {
+    case "minutes":
+    case "seconds":
+    case "millis":
+    case "micros":
+    case "nanos":
+    case "bytes":
+      return unit;
+    default:
+      return undefined;
+  }
 }
 
 function sortMetrics(metrics: Metrics): Metrics {

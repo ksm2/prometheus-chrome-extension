@@ -5,6 +5,7 @@ describe("aggregate", () => {
   it("should aggregate a metric without a value", () => {
     const lines: Line[] = [
       instruction("TYPE", "empty_metric", "gauge"),
+      instruction("UNIT", "empty_metric", "seconds"),
       instruction("HELP", "empty_metric", "It has no value."),
     ];
     const result = aggregate(lines);
@@ -13,6 +14,46 @@ describe("aggregate", () => {
         name: "empty_metric",
         help: "It has no value.",
         type: "gauge",
+        unit: "seconds",
+        children: [],
+        labels: {},
+        value: undefined,
+      },
+    });
+  });
+
+  it("should deduct a unit from the name", () => {
+    const lines: Line[] = [
+      instruction("TYPE", "just_a_few_seconds", "gauge"),
+      instruction("HELP", "just_a_few_seconds", "This is in seconds."),
+    ];
+    const result = aggregate(lines);
+    expect(result).toEqual({
+      just_a_few_seconds: {
+        name: "just_a_few_seconds",
+        help: "This is in seconds.",
+        type: "gauge",
+        unit: "seconds",
+        children: [],
+        labels: {},
+        value: undefined,
+      },
+    });
+  });
+
+  it("should prefer a UNIT instruction over the name", () => {
+    const lines: Line[] = [
+      instruction("TYPE", "just_a_few_seconds", "gauge"),
+      instruction("UNIT", "just_a_few_seconds", "minutes"),
+      instruction("HELP", "just_a_few_seconds", "This is in minutes."),
+    ];
+    const result = aggregate(lines);
+    expect(result).toEqual({
+      just_a_few_seconds: {
+        name: "just_a_few_seconds",
+        help: "This is in minutes.",
+        type: "gauge",
+        unit: "minutes",
         children: [],
         labels: {},
         value: undefined,

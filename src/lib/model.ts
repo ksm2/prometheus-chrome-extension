@@ -2,13 +2,13 @@ export type Line = InstructionLine | MetricLine;
 
 export interface InstructionLine {
   type: "instruction";
-  instr: "TYPE" | "HELP" | string;
+  instr: "TYPE" | "HELP" | "UNIT" | string;
   name: string;
   value: string;
 }
 
 export function instruction(
-  instr: "TYPE" | "HELP",
+  instr: "TYPE" | "HELP" | "UNIT",
   name: string,
   value: string,
 ): InstructionLine {
