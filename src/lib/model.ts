@@ -62,11 +62,15 @@ export interface ChildMetric {
   value: MetricValue;
 }
 
-export type MetricValue = Literal | Histogram | Summary;
+export type MetricValue = Literal | Info | Histogram | Summary;
 
 export interface Literal {
   type: "literal";
   value: string;
+}
+
+export interface Info {
+  type: "info";
 }
 
 export interface Histogram {

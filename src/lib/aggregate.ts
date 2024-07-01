@@ -103,6 +103,9 @@ function createMetricValue(
   kind?: string,
 ): void {
   switch (metric.type) {
+    case "info":
+      createInfoValue(metric, line, kind);
+      break;
     case "histogram":
       createHistogramValue(metric, line, kind);
       break;
@@ -120,6 +123,15 @@ function createLiteralValue(metric: Metric, line: MetricLine) {
     labels: line.labels,
     value: { type: "literal", value: line.value },
   });
+}
+
+function createInfoValue(metric: Metric, line: MetricLine, kind?: string) {
+  if (kind === "info" || kind === undefined) {
+    pushChild(metric, {
+      labels: line.labels,
+      value: { type: "info" },
+    });
+  }
 }
 
 function createHistogramValue(metric: Metric, line: MetricLine, kind?: string) {

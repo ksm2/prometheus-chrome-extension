@@ -21,6 +21,12 @@ export function MetricValueItem({ value, labels, unit }: Props) {
           </ValueWithOptionalUnit>
         </span>
       );
+    case "info":
+      return (
+        <span className={styles.MetricValueItem}>
+          <LabelDisplay labels={labels} />
+        </span>
+      );
     case "histogram":
       return (
         <span className={styles.MetricValueItem}>

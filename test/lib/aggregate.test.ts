@@ -121,4 +121,50 @@ describe("aggregate", () => {
       },
     });
   });
+
+  it("should aggregate an info metric", () => {
+    const lines: Line[] = [
+      instruction("TYPE", "target", "info"),
+      instruction("HELP", "target", "It is an info metric."),
+      metric("target_info", "1", { version: "1.0.0", name: "my_app" }),
+    ];
+    const result = aggregate(lines);
+    expect(result).toEqual({
+      target: {
+        name: "target",
+        help: "It is an info metric.",
+        type: "info",
+        children: [],
+        labels: { version: "1.0.0", name: "my_app" },
+        value: {
+          type: "info",
+        },
+      },
+    });
+  });
+
+  it("should aggregate an info metric without suffix", () => {
+    const lines: Line[] = [
+      instruction("TYPE", "target_info", "info"),
+      instruction(
+        "HELP",
+        "target_info",
+        "It is an info metric without suffix.",
+      ),
+      metric("target_info", "1", { version: "1.0.0", name: "my_app" }),
+    ];
+    const result = aggregate(lines);
+    expect(result).toEqual({
+      target_info: {
+        name: "target_info",
+        help: "It is an info metric without suffix.",
+        type: "info",
+        children: [],
+        labels: { version: "1.0.0", name: "my_app" },
+        value: {
+          type: "info",
+        },
+      },
+    });
+  });
 });
