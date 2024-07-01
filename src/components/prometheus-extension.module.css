@@ -47,12 +47,24 @@ ul.Tree {
   background: #6262ff;
 }
 
+.MetricType.inf {
+  background: #138bc2;
+}
+
 .MetricType.sum {
   background: darkgreen;
 }
 
 .MetricType.his {
   background: #db7900;
+}
+
+.MetricType.ghs {
+  background: #db7900;
+}
+
+.MetricType.sts {
+  background: #9911e6;
 }
 
 .MetricCount {

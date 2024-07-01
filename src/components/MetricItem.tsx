@@ -1,6 +1,6 @@
 import React from "react";
 import { HistogramBucket, Metric, SummaryQuantile, Unit } from "../lib/model";
-import { MetricType } from "./MetricType";
+import { MetricTypePill } from "./MetricTypePill";
 import { MetricValueItem } from "./MetricValueItem";
 import * as styles from "./prometheus-extension.module.css";
 import { Tooltip } from "./Tooltip";
@@ -21,7 +21,7 @@ export function MetricItem({ metric }: { metric: Metric }) {
     <TreeNode>
       <TreeLabel>
         <Tooltip text={tooltipText}>
-          <MetricType type={metric.type} />
+          <MetricTypePill type={metric.type} />
           <span style={{ marginRight: "0.5rem" }}>{metric.name}</span>
         </Tooltip>
         {metric.children.length > 1 ? (
