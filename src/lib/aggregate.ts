@@ -38,12 +38,16 @@ function aggregateInstruction(metrics: Metrics, line: InstructionLine) {
 function aggregateMetric(metrics: Metrics, line: MetricLine) {
   if (metrics[line.name] !== undefined) {
     createMetricValue(metrics[line.name], line);
-  } else {
-    const { name, kind } = getMetricName(line);
+    return;
+  }
 
-    metrics[name] ??= createMetric(name);
-
-    createMetricValue(metrics[name], line, kind);
+  const index = line.name.lastIndexOf("_");
+  if (index !== -1) {
+    const name = line.name.slice(0, index);
+    const suffix = line.name.slice(index + 1);
+    if (metrics[name] !== undefined) {
+      createMetricValue(metrics[name], line, suffix);
+    }
   }
 }
 
@@ -98,28 +102,31 @@ function createMetricValue(
   line: MetricLine,
   kind?: string,
 ): void {
-  if (kind === undefined) {
-    if (line.labels.quantile !== undefined) {
-      const { quantile: _, ...labelsToLookFor } = line.labels;
-      const summary = getSummary(metric, labelsToLookFor);
-      if (summary !== undefined) {
-        summary.quantiles.push({
-          quantile: line.labels.quantile,
-          value: line.value,
-        });
-        return;
-      }
-    }
-
-    pushChild(metric, {
-      labels: line.labels,
-      value: { type: "literal", value: line.value },
-    });
-    return;
+  switch (metric.type) {
+    case "histogram":
+      createHistogramValue(metric, line, kind);
+      break;
+    case "summary":
+      createSummaryValue(metric, line, kind);
+      break;
+    default:
+      createLiteralValue(metric, line);
+      break;
   }
+}
 
+function createLiteralValue(metric: Metric, line: MetricLine) {
+  pushChild(metric, {
+    labels: line.labels,
+    value: { type: "literal", value: line.value },
+  });
+}
+
+function createHistogramValue(metric: Metric, line: MetricLine, kind?: string) {
   const { le: _, ...labelsToLookFor } = line.labels;
   const histogram = getHistogram(metric, labelsToLookFor);
+  if (histogram === undefined) return;
+
   switch (kind) {
     case "bucket":
       histogram.buckets.push({
@@ -133,6 +140,26 @@ function createMetricValue(
     case "count":
       histogram.count = line.value;
       break;
+  }
+}
+
+function createSummaryValue(metric: Metric, line: MetricLine, kind?: string) {
+  const { quantile: _, ...labelsToLookFor } = line.labels;
+  const summary = getSummary(metric, labelsToLookFor);
+  if (summary === undefined) return;
+
+  switch (kind) {
+    case "sum":
+      summary.sum = line.value;
+      break;
+    case "count":
+      summary.count = line.value;
+      break;
+    case undefined:
+      summary.quantiles.push({
+        quantile: line.labels.quantile,
+        value: line.value,
+      });
   }
 }
 
@@ -188,16 +215,6 @@ function labelsEqual(a: Labels, b: Labels): boolean {
     if (a[key] !== b[key]) return false;
   }
   return true;
-}
-
-function getMetricName(line: MetricLine): { name: string; kind?: string } {
-  if (line.name.endsWith("_bucket"))
-    return { name: line.name.slice(0, -7), kind: "bucket" };
-  if (line.name.endsWith("_sum"))
-    return { name: line.name.slice(0, -4), kind: "sum" };
-  if (line.name.endsWith("_count"))
-    return { name: line.name.slice(0, -6), kind: "count" };
-  return { name: line.name };
 }
 
 function deductUnitFromName(name: string): Unit | undefined {
