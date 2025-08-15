@@ -22,6 +22,7 @@ This is a Chrome Extension that allows you to monitor your Prometheus instances 
 - Detailed view of histograms and summaries
 - Tooltip with metric description
 - Aggregates common labels
+- Expand all / collapse all metrics
 - Supports the [OpenMetrics][OM] format
 - Dark mode support
 
