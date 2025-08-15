@@ -1,5 +1,4 @@
-import { aggregate } from "./aggregate";
-import { InstructionLine, Labels, Line, MetricLine, Metrics } from "./model";
+import { InstructionLine, Labels, Line, MetricLine } from "./model";
 
 export function parse(input: string): Line[] {
   const lines = splitLines(input)
@@ -19,7 +18,7 @@ function splitLines(input: string): string[] {
 const INSTR_PATTERN = /^#\s+(?<instr>\w+)\s+(?<name>.*?)\s+(?<value>.*)$/;
 
 const METRIC_PATTERN =
-  /^(?<name>[a-zA-Z0-9_]+)(\{(?<labels>.*)})?\s+(?<value>[+-]?(\.[0-9]+|[0-9]+|[0-9]+\.[0-9]*)([eE][+-]?[0-9]+)?|[+-]Inf|NaN)(\s+(?<timestamp>[0-9]+))?$/;
+  /^(?<name>[a-zA-Z0-9_]+)(\{(?<labels>.*?)(,\s*)?})?\s+(?<value>[+-]?(\.[0-9]+|[0-9]+|[0-9]+\.[0-9]*)([eE][+-]?[0-9]+)?|[+-]Inf|NaN)(\s+(?<timestamp>[0-9]+))?$/;
 
 function parseLine(line: string): Line | null {
   const instrMatch = INSTR_PATTERN.exec(line);
@@ -61,11 +60,11 @@ function normalizeRawLabels(rawLabels?: string): Labels {
   const trimmed = rawLabels.trim();
   if (trimmed.length === 0) return {};
 
-  const keyValuePairs = trimmed.split(",");
+  const keyValuePairs = trimmed.split(/\s*,\s*/);
   return Object.fromEntries(keyValuePairs.map(splitKeyValuePair));
 }
 
-const KV_PATTERN = /(?<key>.*)="(?<value>.*)"/;
+const KV_PATTERN = /(?<key>.*?)\s*=\s*"(?<value>.*?)"/;
 
 function splitKeyValuePair(kv: string): [string, string] {
   const match = KV_PATTERN.exec(kv);

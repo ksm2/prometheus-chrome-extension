@@ -53,6 +53,58 @@ describe("parse", () => {
     ]);
   });
 
+  it("should parse a line with a float metric and multiple labels", () => {
+    const line = 'metric_name{key1="value1",key2="value2"} 42.42';
+    const result = parse(line);
+    expect(result).toEqual([
+      {
+        type: "metric",
+        name: "metric_name",
+        labels: { key1: "value1", key2: "value2" },
+        value: "42.42",
+      },
+    ]);
+  });
+
+  it("should parse a line with labels having a trailing comma", () => {
+    const line = 'metric_name{key1="value1",key2="value2",} 42.42';
+    const result = parse(line);
+    expect(result).toEqual([
+      {
+        type: "metric",
+        name: "metric_name",
+        labels: { key1: "value1", key2: "value2" },
+        value: "42.42",
+      },
+    ]);
+  });
+
+  it("should parse a line without labels consisting only of a trailing comma", () => {
+    const line = "metric_name{  ,  } 42.42";
+    const result = parse(line);
+    expect(result).toEqual([
+      {
+        type: "metric",
+        name: "metric_name",
+        labels: {},
+        value: "42.42",
+      },
+    ]);
+  });
+
+  it("should parse a line with labels ignoring whitespace", () => {
+    const line = 'metric_name{   key1 = "apple", key2 = "pear"   } 42.42';
+    const result = parse(line);
+    expect(result).toEqual([
+      {
+        type: "metric",
+        name: "metric_name",
+        labels: { key1: "apple", key2: "pear" },
+        value: "42.42",
+      },
+    ]);
+  });
+
   it("should parse a line with a timestamp", () => {
     const line = "metric_name 42 1612345678";
     const result = parse(line);
