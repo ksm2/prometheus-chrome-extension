@@ -15,7 +15,7 @@ import { TreeLabel } from "./TreeLabel";
 import { TreeNode } from "./TreeNode";
 import { LabelDisplay } from "./LabelDisplay";
 
-export function MetricItem({ metric, expandAll, collapseAll }: { metric: Metric, expandAll: boolean, collapseAll: boolean }) {
+export function MetricItem({ metric }: { metric: Metric }) {
   const tooltipText = (
     <>
       Type: {prettifyMetricType(metric.type)}
@@ -25,7 +25,7 @@ export function MetricItem({ metric, expandAll, collapseAll }: { metric: Metric,
   );
 
   return (
-    <TreeNode name={metric.name} expandAll={expandAll} collapseAll={collapseAll}>
+    <TreeNode name={metric.name}>
       <TreeLabel>
         <Tooltip text={tooltipText}>
           <MetricTypePill type={metric.type} />
@@ -51,7 +51,7 @@ export function MetricItem({ metric, expandAll, collapseAll }: { metric: Metric,
       <TreeChildren>
         {metric.value?.type === "histogram" &&
           metric.value.buckets.map((bucket, index) => (
-            <TreeNode key={index} name={`${metric.name}_bucket_${index}`} expandAll={expandAll} collapseAll={collapseAll}>
+            <TreeNode key={index} name={`${metric.name}_bucket_${index}`}>
               <TreeLabel>
                 <BucketValueItem bucket={bucket} />
               </TreeLabel>
@@ -59,7 +59,7 @@ export function MetricItem({ metric, expandAll, collapseAll }: { metric: Metric,
           ))}
         {metric.value?.type === "summary" &&
           metric.value.quantiles.map((quantile, index) => (
-            <TreeNode key={index} name={`${metric.name}_quantile_${index}`} expandAll={expandAll} collapseAll={collapseAll}>
+            <TreeNode key={index} name={`${metric.name}_quantile_${index}`}>
               <TreeLabel>
                 <QuantileValueItem quantile={quantile} unit={metric.unit} />
               </TreeLabel>
@@ -67,7 +67,7 @@ export function MetricItem({ metric, expandAll, collapseAll }: { metric: Metric,
           ))}
 
         {metric.children.map((child, index) => (
-          <TreeNode key={index} name={`${metric.name}_child_${index}`} expandAll={expandAll} collapseAll={collapseAll}>
+          <TreeNode key={index} name={`${metric.name}_child_${index}`}>
             <TreeLabel>
               <MetricValueItem
                 value={child.value}
@@ -78,7 +78,10 @@ export function MetricItem({ metric, expandAll, collapseAll }: { metric: Metric,
             <TreeChildren>
               {child.value.type === "histogram" &&
                 child.value.buckets.map((bucket, index) => (
-                  <TreeNode key={index} name={`${metric.name}_child_${index}_bucket_${index}`} expandAll={expandAll} collapseAll={collapseAll}>
+                  <TreeNode
+                    key={index}
+                    name={`${metric.name}_child_${index}_bucket_${index}`}
+                  >
                     <TreeLabel>
                       <BucketValueItem bucket={bucket} />
                     </TreeLabel>
@@ -86,7 +89,10 @@ export function MetricItem({ metric, expandAll, collapseAll }: { metric: Metric,
                 ))}
               {child.value?.type === "summary" &&
                 child.value.quantiles.map((quantile, index) => (
-                  <TreeNode key={index} name={`${metric.name}_child_${index}_quantile_${index}`} expandAll={expandAll} collapseAll={collapseAll}>
+                  <TreeNode
+                    key={index}
+                    name={`${metric.name}_child_${index}_quantile_${index}`}
+                  >
                     <TreeLabel>
                       <QuantileValueItem
                         quantile={quantile}

@@ -143,3 +143,10 @@ ul.Tree {
 .Tooltip.Visible {
   display: block;
 }
+
+.Menu {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
