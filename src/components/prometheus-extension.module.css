@@ -16,6 +16,7 @@ ul.Tree {
   position: relative;
   padding-left: 1rem;
   appearance: none;
+  user-select: text;
   font-weight: bold;
   font-family: monospace;
   border: none;
@@ -38,6 +39,7 @@ ul.Tree {
   background: darkgray;
   border-radius: 0.25rem;
   padding: 0 0.25rem;
+  user-select: none;
 }
 
 .MetricType.gau {
@@ -72,6 +74,7 @@ ul.Tree {
   color: gray;
   font-weight: normal;
   font-style: italic;
+  user-select: none;
 }
 
 .MetricValueItem {
@@ -138,6 +141,7 @@ ul.Tree {
   z-index: 999999;
   text-align: left;
   box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
+  user-select: none;
 }
 
 .Tooltip.Visible {
