@@ -1,15 +1,29 @@
 import classNames from "classnames";
-import React, { ReactNode, useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  ReactNode,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { TreeContext } from "./Tree";
 import * as styles from "./prometheus-extension.module.css";
+import { readExpanded, writeExpanded } from "../lib/localStorage";
 
-export function TreeNode({ children, name, expandAll, collapseAll }: { children: ReactNode, name: string, expandAll: boolean, collapseAll: boolean }) {
+export function TreeNode({
+  children,
+  name,
+  expandAll,
+  collapseAll,
+}: {
+  children: ReactNode;
+  name: string;
+  expandAll: boolean;
+  collapseAll: boolean;
+}) {
   const ctx = useContext(TreeContext);
   const [expandable, setExpandable] = useState(false);
-  const [expanded, setExpanded] = useState<boolean>(() => {
-    const stored = localStorage.getItem(name);
-    return stored ? JSON.parse(stored) : false;
-  });
+  const [expanded, setExpanded] = useState<boolean>(() => readExpanded(name));
   const cn = classNames(styles.TreeNode, { [styles.Expandable]: expandable });
 
   useLayoutEffect(() => {
@@ -17,7 +31,7 @@ export function TreeNode({ children, name, expandAll, collapseAll }: { children:
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(name, JSON.stringify(expanded));
+    writeExpanded(name, expanded);
   }, [expanded]);
 
   useEffect(() => {
